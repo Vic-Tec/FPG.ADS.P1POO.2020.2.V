@@ -25,10 +25,11 @@
                 int i = Integer.parseInt(request.getParameter("i"));
                 Disciplina alt = disciplinasList.get(i);
                 try{
-                    alt.equals(Double.parseDouble(request.getParameter("nota")));
+                    alt.setNota(Double.parseDouble(request.getParameter("nota")));
                 } catch(Exception ex){
                     alt.setNota(0.0);
                 }
+                response.sendRedirect(request.getRequestURI());
             }
         %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
