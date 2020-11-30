@@ -15,15 +15,44 @@
                 disciplinasList = Disciplina.getList();
                 application.setAttribute("disciplinasList", disciplinasList);
             }
-            if(request.getParameter("def")!=null){
-                int i = Integer.parseInt(request.getParameter("i"));
-                Disciplina alt = disciplinasList.get(i);
-                try{
-                    alt.setNota(Double.parseDouble(request.getParameter("nota")));
-                } catch(Exception ex){
-                    alt.setNota(0.0);
+            String exceptionMessage = null;
+            if (request.getParameter("def") != null) {
+                try {
+                    String nome = request.getParameter("nome");
+                    long rowId = Long.parseLong(request.getParameter("rowId"));
+                    double nota = Double.parseDouble(request.getParameter("nota"));
+                    String ementa = request.getParameter("ementa");
+                    int ciclo = Integer.parseInt(request.getParameter("ciclo"));
+                    Disciplina.update(rowId, nome, ementa, ciclo, nota);
+                    response.sendRedirect(request.getRequestURI());
+                } catch (Exception ex) {
+                    exceptionMessage = ex.getLocalizedMessage();
                 }
+            }
+            if (request.getParameter("cancelar") != null) {
                 response.sendRedirect(request.getRequestURI());
+            }
+            if (request.getParameter("acionarIns") != null) {
+                try {
+                    String nome = request.getParameter("nome");
+                    long rowId = Long.parseLong(request.getParameter("rowId"));
+                    double nota = Double.parseDouble(request.getParameter("nota"));
+                    String ementa = request.getParameter("ementa");
+                    int ciclo = Integer.parseInt(request.getParameter("ciclo"));
+                    Disciplina.update(rowId, nome, ementa, ciclo, nota);
+                    response.sendRedirect(request.getRequestURI());
+                } catch (Exception ex) {
+                    exceptionMessage = ex.getLocalizedMessage();
+                }
+            }
+            if (request.getParameter("acionarDel") != null) {
+                try {
+                    long rowId = Long.parseLong(request.getParameter("rowId"));
+                    Disciplina.delete(rowId);
+                    response.sendRedirect(request.getRequestURI());
+                } catch (Exception ex) {
+                    exceptionMessage = ex.getLocalizedMessage();
+                }
             }
         %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -43,9 +72,9 @@
                 <th>Nota</th>
                 <th>Definição de Nota</th>
             </tr>
-            <%for(int i=0;i<disciplinasList.size();i++){%>
+            <%for (int i = 0; i < disciplinasList.size(); i++) {%>
             <tr>
-                <td><%=i+1%></td>
+                <td><%=i + 1%></td>
                 <%Disciplina d = disciplinasList.get(i);%>
                 <td><%= d.getNome()%></td>
                 <td><%= d.getEmenta()%></td>
